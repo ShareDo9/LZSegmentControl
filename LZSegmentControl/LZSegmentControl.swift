@@ -13,7 +13,18 @@ class LZSegmentControl: UIControl, LZSegmentSliderDelegate, LZSegmentContentDele
     var headerView : LZSegmentSlider!
     var segmentContent : LZSegmentContent!
     
-
+    private var isSetupindex = false
+    
+    private(set) var selectedIndex = 0 {
+        didSet{
+            isSetupindex = true
+            let x = CGFloat(selectedIndex) * segmentContent.bounds.size.width
+            segmentContent.contentOffset = CGPoint(x: x, y: 0.0)
+            isSetupindex = false
+        }
+    }
+    
+    
     init(_ headframe: CGRect, _ scrollViewFrame: CGRect, _ titles:[String]) {
         super.init(frame: .zero)
         
@@ -54,6 +65,8 @@ class LZSegmentControl: UIControl, LZSegmentSliderDelegate, LZSegmentContentDele
             segmentContent.addSubview(subView!)
             x += size.width
         }
+        
+        selectedIndex = headerView.curIndex
     
     }
     
@@ -64,6 +77,7 @@ class LZSegmentControl: UIControl, LZSegmentSliderDelegate, LZSegmentContentDele
 
     func contentDidScroll(_ offSetX: Float) {
         if headerView.isAnimation { return }
+        if isSetupindex { return }
         
         let contentW = Float(segmentContent.bounds.size.width)
         

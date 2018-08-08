@@ -18,7 +18,7 @@ protocol LZSegmentSliderDelegate: class {
 ///
 /// - defult: 默认样式
 /// - line: 线条样式
-enum LZSegmentSliderStyle: Int {
+enum LZSegmentSliderStyle {
 
     case defult
     
@@ -60,29 +60,30 @@ class LZSegmentSlider: UIScrollView {
 
     weak var segmentDelegate: LZSegmentSliderDelegate?
     
-    var selectIndex: Int = defultSelectedIndex
+    private var selectIndex: Int = defultSelectedIndex
     
-    var curIndex: Int = defultSelectedIndex
+    /// 默认选中jindex
+    var curIndex: Int = defultSelectedIndex 
     
-    var titlesArray: [String]?
+    private var titlesArray: [String]?
     
-    lazy var segmentBtns: [UIButton] = {
+    private lazy var segmentBtns: [UIButton] = {
     
         let btn = Array<UIButton>()
         return btn
     }()
     
-    lazy var segmentWidths: [CGFloat] = {
+    private lazy var segmentWidths: [CGFloat] = {
         
         let btn = Array<CGFloat>()
         return btn
     }()
     
-    var segmentTatolWidth: CGFloat = 0.0
+    private var segmentTatolWidth: CGFloat = 0.0
     
     var isAnimation = false
     
-    var indicatorView: UIView = UIView()
+    private var indicatorView: UIView = UIView()
     
     
     // MARK: 属性设置
@@ -224,13 +225,17 @@ class LZSegmentSlider: UIScrollView {
             
             let index = (titles.index(of: title))!
             let titleColor  = index == curIndex ? titleSelColor : titleNorColor
-            let titleFont   = index == curIndex ? titleSelFont : titleNorFont
+            let titleFont   = titleNorFont
             
             let btn = UIButton(frame: CGRect(x: btnX, y: btnY, width: btnW, height: btnH))
             btn.addTarget(self, action: #selector(selectedAction(_:)), for: .touchUpInside)
             btn.setTitle(title, for: .normal)
             btn.setTitleColor(titleColor, for: .normal)
             btn.titleLabel?.font = UIFont.systemFont(ofSize: titleFont)
+            
+            if index == curIndex {
+                btn.transform = CGAffineTransform(scaleX: self.titleScale, y: self.titleScale)
+            }
             
             segmentBtns.append(btn)
             segmentWidths.append(btnW)
@@ -328,14 +333,12 @@ class LZSegmentSlider: UIScrollView {
         let selectIndex = segmentBtns.index(of: sender)
         
         if selectIndex == curIndex { return }
-
-        let scaleNor = titleNorFont/titleSelFont
         
         if noEffect {
             isAnimation = true
             
-            selectBtn.titleLabel?.font = UIFont.systemFont(ofSize: self.titleSelFont)
-            currentBtn.titleLabel?.font = UIFont.systemFont(ofSize: self.titleNorFont)
+            selectBtn.transform = CGAffineTransform(scaleX: self.titleScale, y: self.titleScale)
+            currentBtn.transform = CGAffineTransform.identity
             
             selectBtn.setTitleColor(self.titleSelColor, for: .normal)
             currentBtn.setTitleColor(self.titleNorColor, for: .normal)
@@ -374,7 +377,8 @@ class LZSegmentSlider: UIScrollView {
                 
                 if self.titleScale != 1.0 {
                     selectBtn.transform = CGAffineTransform(scaleX: self.titleScale, y: self.titleScale)
-                    currentBtn.transform = CGAffineTransform(scaleX: scaleNor, y: scaleNor)
+                    currentBtn.transform = CGAffineTransform.identity
+                    
                 }
                 
                 selectBtn.setTitleColor(self.titleSelColor, for: .normal)
@@ -408,14 +412,6 @@ class LZSegmentSlider: UIScrollView {
                 
             }) { (completion) in
                 
-                if self.titleScale != 1.0 {
-                    selectBtn.transform = CGAffineTransform.identity
-                    currentBtn.transform = CGAffineTransform.identity
-                    
-                    selectBtn.titleLabel?.font = UIFont.systemFont(ofSize: self.titleSelFont)
-                    currentBtn.titleLabel?.font = UIFont.systemFont(ofSize: self.titleNorFont)
-                }
-                
                 self.selectedScrollViewAction(index: selectIndex!)
                 
                 self.isAnimation = false
@@ -439,8 +435,9 @@ class LZSegmentSlider: UIScrollView {
             
             if scale > 0.5 {
                 
-                leftBtn.titleLabel?.font = UIFont.systemFont(ofSize: self.titleNorFont)
-                rightBtn?.titleLabel?.font = UIFont.systemFont(ofSize: self.titleSelFont)
+                leftBtn.transform = CGAffineTransform.identity
+                rightBtn?.transform = CGAffineTransform(scaleX: self.titleScale, y: self.titleScale)
+                
                 
                 leftBtn.setTitleColor(self.titleNorColor, for: .normal)
                 rightBtn?.setTitleColor(self.titleSelColor, for: .normal)
@@ -461,8 +458,8 @@ class LZSegmentSlider: UIScrollView {
                 
             }else {
                 
-                leftBtn.titleLabel?.font = UIFont.systemFont(ofSize: self.titleSelFont)
-                rightBtn?.titleLabel?.font = UIFont.systemFont(ofSize: self.titleNorFont)
+                rightBtn?.transform = CGAffineTransform.identity
+                leftBtn.transform = CGAffineTransform(scaleX: self.titleScale, y: self.titleScale)
                 
                 leftBtn.setTitleColor(self.titleSelColor, for: .normal)
                 rightBtn?.setTitleColor(self.titleNorColor, for: .normal)
@@ -493,14 +490,16 @@ class LZSegmentSlider: UIScrollView {
     
     private func titleFontChange(_ scale: Float, _ leftBtn: UIButton, _ rightBtn: UIButton? ) {
         if titleNorFont == titleSelFont { return }
-        let font = titleSelFont - titleNorFont
         
-        let leftFont = titleNorFont + CGFloat(1 - scale) * font
-        let rightFont = titleNorFont + CGFloat(scale) * font
+        leftBtn.transform = CGAffineTransform.identity
         
-        leftBtn.titleLabel?.font = UIFont.systemFont(ofSize: leftFont)
+        let leftScale = 1.0 + CGFloat(1 - scale) * (self.titleScale - 1.0)
+        let rightScale = 1.0 + CGFloat(scale) * (self.titleScale - 1.0)
+        
+        leftBtn.transform = CGAffineTransform(scaleX: leftScale, y: leftScale)
         if let btn = rightBtn {
-            btn.titleLabel?.font = UIFont.systemFont(ofSize: rightFont)
+            btn.transform = CGAffineTransform.identity
+            btn.transform = CGAffineTransform(scaleX: rightScale, y: rightScale)
         }
     }
     
@@ -597,7 +596,7 @@ fileprivate func textWidth(string: String, height: CGFloat, font: CGFloat) -> CG
     
     return text.boundingRect(with: CGSize(width: CGFloat(MAXFLOAT), height: height),
                              options: [.usesLineFragmentOrigin],
-                             attributes: [kCTFontAttributeName as NSAttributedStringKey : UIFont.systemFont(ofSize: font)],
+                             attributes: [kCTFontAttributeName as NSAttributedString.Key : UIFont.systemFont(ofSize: font)],
                              context: nil).size.width
 }
 
