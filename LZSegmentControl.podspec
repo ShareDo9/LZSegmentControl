@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
   s.name         = "LZSegmentControl"
   s.version      = "0.0.2"
   s.summary      = "LZSegmentControl是一款支持多种样式的自定义控件"
-  s.swift_version = '4.2'
+  # s.swift_version = '4.2'
 
   # This description is used to generate tags and improve search results.
   #   * Think: What does it do? Why did you write it? What is the focus?
@@ -65,10 +65,10 @@ Pod::Spec.new do |s|
   #
 
   # s.platform     = :ios
-  s.platform     = :ios, "10.0"
+  # s.platform     = :ios, "10.0"
 
   #  When using multiple platforms
-  # s.ios.deployment_target = "5.0"
+  s.ios.deployment_target = "8.0"
   # s.osx.deployment_target = "10.7"
   # s.watchos.deployment_target = "2.0"
   # s.tvos.deployment_target = "9.0"
