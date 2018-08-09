@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  Example
 //
-//  Created by Ray on 2018/8/6.
+//  Created by Ray on 2018/8/9.
 //  Copyright © 2018年 Ray. All rights reserved.
 //
 
@@ -13,13 +13,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = ExampleViewController()
         window?.makeKeyAndVisible()
         
-        // Override point for customization after application launch.
         return true
     }
 
