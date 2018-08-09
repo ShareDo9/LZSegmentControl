@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
   s.name         = "LZSegmentControl"
   s.version      = "0.0.2"
   s.summary      = "LZSegmentControl是一款支持多种样式的自定义控件"
-  # s.swift_version = '4.2'
+  s.swift_version = '4.2'
 
   # This description is used to generate tags and improve search results.
   #   * Think: What does it do? Why did you write it? What is the focus?

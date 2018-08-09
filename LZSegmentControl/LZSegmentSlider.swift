@@ -596,7 +596,7 @@ fileprivate func textWidth(string: String, height: CGFloat, font: CGFloat) -> CG
     
     return text.boundingRect(with: CGSize(width: CGFloat(MAXFLOAT), height: height),
                              options: [.usesLineFragmentOrigin],
-                             attributes: [kCTFontAttributeName as NSAttributedString.Key : UIFont.systemFont(ofSize: font)],
+                             attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: font)],
                              context: nil).size.width
 }
 
