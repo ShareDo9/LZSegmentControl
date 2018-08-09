@@ -16,16 +16,16 @@ import UIKit
     @objc optional func contentDidEndScrollingAnimation()
 }
 
-class LZSegmentContent: UIScrollView, UIScrollViewDelegate {
+open class LZSegmentContent: UIScrollView, UIScrollViewDelegate {
 
     weak var contentDelegate: LZSegmentContentDelegate?
     
-    var contentW = Float(UIScreen.main.bounds.width)
+    public var contentW = Float(UIScreen.main.bounds.width)
     
     weak var segment: LZSegmentSlider!
     
     /// 滚动动画
-    var isAnimation = true
+    public var isAnimation = true
     
     
     override init(frame: CGRect) {
@@ -34,11 +34,11 @@ class LZSegmentContent: UIScrollView, UIScrollViewDelegate {
         self.isPagingEnabled = true
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
         let offSetX = Float(scrollView.contentOffset.x);
         
@@ -48,7 +48,7 @@ class LZSegmentContent: UIScrollView, UIScrollViewDelegate {
         
     }
     
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let offSetX = Float(scrollView.contentOffset.x);
         let index =  Int(offSetX / contentW)
         
@@ -58,7 +58,7 @@ class LZSegmentContent: UIScrollView, UIScrollViewDelegate {
         
     }
     
-    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+    public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
 
         if (contentDelegate?.responds(to: #selector(LZSegmentContentDelegate.contentDidEndScrollingAnimation)))! {
             contentDelegate?.contentDidEndScrollingAnimation!()

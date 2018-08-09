@@ -18,7 +18,7 @@ protocol LZSegmentSliderDelegate: class {
 ///
 /// - defult: 默认样式
 /// - line: 线条样式
-enum LZSegmentSliderStyle {
+public enum LZSegmentSliderStyle {
 
     case defult
     
@@ -30,7 +30,7 @@ enum LZSegmentSliderStyle {
 /// - equallyWidth: 均分
 /// - titleLengthWith: 根据按钮标题长度
 /// - fixedWidth: 固定宽度
-enum LZSegmentSliderLayoutStyle {
+public enum LZSegmentSliderLayoutStyle {
     
     case equallyWidth
     
@@ -44,7 +44,7 @@ enum LZSegmentSliderLayoutStyle {
 /// - equallyScale: 等比例
 /// - equallyTitleWith: 等于标题长度
 /// - fixedWidth: 固定宽度
-enum LZSegmentSliderIndicatorStyle {
+public enum LZSegmentSliderIndicatorStyle {
     
     case equallyScale
     
@@ -56,14 +56,14 @@ enum LZSegmentSliderIndicatorStyle {
 fileprivate let defultSelectedIndex = 0
 
 
-class LZSegmentSlider: UIScrollView {
+open class LZSegmentSlider: UIScrollView {
 
     weak var segmentDelegate: LZSegmentSliderDelegate?
     
     private var selectIndex: Int = defultSelectedIndex
     
     /// 默认选中jindex
-    var curIndex: Int = defultSelectedIndex 
+    open var curIndex: Int = defultSelectedIndex
     
     private var titlesArray: [String]?
     
@@ -81,7 +81,7 @@ class LZSegmentSlider: UIScrollView {
     
     private var segmentTatolWidth: CGFloat = 0.0
     
-    var isAnimation = false
+    open var isAnimation = false
     
     private var indicatorView: UIView = UIView()
     
@@ -89,14 +89,14 @@ class LZSegmentSlider: UIScrollView {
     // MARK: 属性设置
     
     /// 选中时按钮颜色 ---- 默认为black
-    var titleSelColor = UIColor.black {
+    open var titleSelColor = UIColor.black {
         didSet {
             self.setUp(selColor: titleSelColor)
         }
     }
     
     /// 未选中时按钮颜色 ---- 默认为darkText
-    var titleNorColor = UIColor.darkGray {
+    open var titleNorColor = UIColor.darkGray {
         didSet {
             self.setUp(nomalColor: titleNorColor)
         }
@@ -106,60 +106,60 @@ class LZSegmentSlider: UIScrollView {
     private var titleSelFont: CGFloat = 16.0
     
     /// 未选中时按钮字体大小 ---- 默认为14.0
-    var titleNorFont: CGFloat = 14.0 {
+    open var titleNorFont: CGFloat = 14.0 {
         didSet {
             titleScale = titleSelFont / titleNorFont
         }
     }
     
     /// 选中时按钮字体比例
-    var titleScale: CGFloat = 16.0/14.0 {
+    open var titleScale: CGFloat = 16.0/14.0 {
         didSet {
             titleSelFont = titleScale * titleNorFont
         }
     }
     
     /// 按钮标题边距大小 ---- 只有在titleLengthWith类型下才有效。默认为10.0
-    var titleContentOffSet: CGFloat = 10.0
+    open var titleContentOffSet: CGFloat = 10.0
     
     /// 线条颜色 ---- 默认为black
-    var indicatorColor: UIColor = UIColor.black
+    open var indicatorColor: UIColor = UIColor.black
     
     /// 线条高度 ---- 默认为5.0
-    var indicatorheight: CGFloat = 2.0
+    open var indicatorheight: CGFloat = 2.0
     
     /// 线条的固定宽度 ---- 类型为fixedWidth，默认20.0
-    var indicatorFixedWidth: CGFloat = 20.0
+    open var indicatorFixedWidth: CGFloat = 20.0
     
     /// 线条宽度比例 ---- 类型为equallyScale，默认为0.5
-    var indicatorWidthScale: CGFloat = 0.5
+    open var indicatorWidthScale: CGFloat = 0.5
     
     /// 线条宽度样式
-    var segmentIndicatorSytle: LZSegmentSliderIndicatorStyle = .equallyScale
+    open var segmentIndicatorSytle: LZSegmentSliderIndicatorStyle = .equallyScale
     
     ///分段按钮样式 ---- 默认为defult
-    var segmentSytle: LZSegmentSliderStyle = .defult
+    open var segmentSytle: LZSegmentSliderStyle = .defult
 
     ///分段按钮宽度类型 ---- 默认equallyWidth
-    var segmentLayoutSytle: LZSegmentSliderLayoutStyle = .equallyWidth
+    open var segmentLayoutSytle: LZSegmentSliderLayoutStyle = .equallyWidth
     
     ///单个分段按钮的固定宽度 ---- 类型为fixedWidth，默认为60.0
-    var segmentWidth: CGFloat = 80.0
+    open var segmentWidth: CGFloat = 80.0
     
     ///延迟效果 ---- 等滚动完成后
-    var isDelay = false
+    open var isDelay = false
     
     /// 无特效 ---- 无动画
-    var noEffect = false
+    open var noEffect = false
     
     
-    var startR: CGFloat = 0.0
-    var startG: CGFloat = 0.0
-    var startB: CGFloat = 0.0
+    private var startR: CGFloat = 0.0
+    private var startG: CGFloat = 0.0
+    private var startB: CGFloat = 0.0
     
-    var endR: CGFloat = 0.0
-    var endG: CGFloat = 0.0
-    var endB: CGFloat = 0.0
+    private var endR: CGFloat = 0.0
+    private var endG: CGFloat = 0.0
+    private var endB: CGFloat = 0.0
     
     init(frame: CGRect, titles:[String]) {
         super.init(frame: frame)
@@ -173,11 +173,11 @@ class LZSegmentSlider: UIScrollView {
         
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func draw(_ rect: CGRect) {
+    override open func draw(_ rect: CGRect) {
         UIColor.white.setFill()
         UIRectFill(self.bounds)
         

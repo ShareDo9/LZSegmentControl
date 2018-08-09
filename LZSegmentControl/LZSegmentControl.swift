@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LZSegmentControl: UIControl, LZSegmentSliderDelegate, LZSegmentContentDelegate {
+open class LZSegmentControl: UIControl, LZSegmentSliderDelegate, LZSegmentContentDelegate {
 
     var headerView : LZSegmentSlider!
     var segmentContent : LZSegmentContent!
@@ -16,6 +16,7 @@ class LZSegmentControl: UIControl, LZSegmentSliderDelegate, LZSegmentContentDele
     private var isSetupindex = false
     
     private(set) var selectedIndex = 0 {
+//    var selectedIndex = 0 {
         didSet{
             isSetupindex = true
             let x = CGFloat(selectedIndex) * segmentContent.bounds.size.width
@@ -25,7 +26,7 @@ class LZSegmentControl: UIControl, LZSegmentSliderDelegate, LZSegmentContentDele
     }
     
     
-    init(_ headframe: CGRect, _ scrollViewFrame: CGRect, _ titles:[String]) {
+    public init(_ headframe: CGRect, _ scrollViewFrame: CGRect, _ titles:[String]) {
         super.init(frame: .zero)
         
         headerView = LZSegmentSlider(frame: headframe, titles: titles)
@@ -35,39 +36,39 @@ class LZSegmentControl: UIControl, LZSegmentSliderDelegate, LZSegmentContentDele
         segmentContent.segment = headerView
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func draw(_ rect: CGRect) {
+    override open func draw(_ rect: CGRect) {
        
     }
-
-    public func setUpSubView( child: [UIViewController],
+    
+   open func setUpSubView( child: [UIViewController],
                               _ block: ( _ segment: LZSegmentSlider, _ scorllView: LZSegmentContent) -> Void) {
-        
+
         block(headerView, segmentContent)
-        
+
         let contentWidth = segmentContent.bounds.size.width * CGFloat(child.count)
         segmentContent.contentSize = CGSize(width: contentWidth, height: 0.0)
-        
+
         var x = CGFloat(0.0)
-        
+
         for sub in child {
             let subView = sub.view
             let size = segmentContent.bounds.size
-            
+
             subView?.frame = CGRect(x: x,
                                     y: CGFloat(0.0),
                                     width: size.width,
                                     height: size.height)
-            
+
             segmentContent.addSubview(subView!)
             x += size.width
         }
-        
+
         selectedIndex = headerView.curIndex
-    
+
     }
     
     func segmentSlider(segment: LZSegmentSlider, didSelectedIndex: Int) {
